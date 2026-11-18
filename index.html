@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>OPERATION: CAUGHT IN 4K 🤣</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+  <!-- 3D WebGL Canvas Container -->
+  <div id="game-container"></div>
+
+  <!-- Screen Flash / Damage Overlay -->
+  <div id="damage-flash" class="hidden"></div>
+  <div id="speed-lines" class="hidden"></div>
+
+  <!-- Floating Dynamic Comic Speech Bubble (3D Tracked / Top Notification) -->
+  <div id="live-barks-container"></div>
+
+  <!-- ================= MAIN MENU OVERLAY ================= -->
+  <div id="main-menu" class="overlay-screen">
+    <div class="bollywood-poster">
+      <div class="poster-badge">🔥 BLOCKBUSTER BOLLYWOOD CHASE 🔥</div>
+      <h1 class="game-title">OPERATION:<br/><span>CAUGHT IN 4K 🤣</span></h1>
+
+      <div class="cast-showcase">
+        <div class="cast-card boy-card">
+          <div class="avatar-ring">
+            <img src="assets/boy.png" alt="The Guy" />
+          </div>
+          <div class="cast-name">THE CHEATER?</div>
+          <div class="cast-quote">"It's not what you think!!"</div>
+        </div>
+
+        <div class="vs-badge">⚡VS👡</div>
+
+        <div class="cast-card gf-card">
+          <div class="avatar-ring fury-ring">
+            <img src="assets/girl.png" alt="Angry GF" />
+            <span class="chappal-floating">🩴</span>
+          </div>
+          <div class="cast-name">FINAL BOSS GF</div>
+          <div class="cast-quote">"AAJ TU GAYA BETA 💀"</div>
+        </div>
+      </div>
+
+      <p class="story-blurb">
+        Cruising peacefully on your Scooty with a "just a friend"... until your <b>ACTUAL GIRLFRIEND</b> spots you at the Chai Naka! Dodge autos, cows, street dogs, potholes &amp; flying chappals!
+      </p>
+
+      <div class="menu-buttons">
+        <button id="btn-start-story" class="btn-primary pulse-btn">🎬 START CHASE (WITH CUTSCENE)</button>
+        <button id="btn-quick-play" class="btn-secondary">🛵 INSTANT ESCAPE</button>
+      </div>
+
+      <div class="controls-guide">
+        <span>💻 <b>Desktop:</b> A/D or ⬅️/➡️ to Steer | W/⬆️ Jump/Wheelie | 1-5 Power-ups</span>
+        <span>📱 <b>Mobile:</b> Swipe Left/Right/Up or Tap On-Screen Controls &amp; Power-ups</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= STORY CUTSCENE OVERLAY ================= -->
+  <div id="cutscene-overlay" class="overlay-screen hidden">
+    <div class="cutscene-box">
+      <div class="cutscene-header">🎥 SCENE 1: ROMANTIC LONG DRIVE GONE WRONG</div>
+      <div id="cutscene-stage">
+        <div class="cutscene-avatar" id="cutscene-speaker-img-wrap">
+          <img id="cutscene-speaker-img" src="assets/boy.png" alt="Speaker" />
+        </div>
+        <div class="cutscene-dialogue-box">
+          <div id="cutscene-speaker-name" class="speaker-tag">BOY ON SCOOTY</div>
+          <div id="cutscene-text" class="dialogue-text">"...and that's how I single-handedly saved the college fest! Haha!"</div>
+        </div>
+      </div>
+      <div class="cutscene-actions">
+        <button id="btn-next-dialogue" class="btn-primary">NEXT ▶</button>
+        <button id="btn-skip-cutscene" class="btn-secondary">SKIP TO CHASE ⏩</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= IN-GAME HUD ================= -->
+  <div id="hud" class="hidden">
+    <!-- Top Bar: Stats & Girlfriend Anger Meter -->
+    <div class="hud-top">
+      <div class="stats-cluster">
+        <div class="stat-pill">
+          <span class="stat-icon">📏</span>
+          <div>
+            <div class="stat-label">ESCAPED</div>
+            <div class="stat-value"><span id="hud-distance">0</span> m</div>
+          </div>
+        </div>
+
+        <div class="stat-pill">
+          <span class="stat-icon">🏆</span>
+          <div>
+            <div class="stat-label">SCORE</div>
+            <div class="stat-value" id="hud-score">0</div>
+          </div>
+        </div>
+
+        <div class="stat-pill coin-pill">
+          <span class="stat-icon">🪙</span>
+          <div>
+            <div class="stat-label">COINS</div>
+            <div class="stat-value" id="hud-coins">0</div>
+          </div>
+        </div>
+
+        <div class="stat-pill speed-pill">
+          <span class="stat-icon">⚡</span>
+          <div>
+            <div class="stat-label">SPEED</div>
+            <div class="stat-value"><span id="hud-speed">45</span> km/h</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Center: Girlfriend Anger & Proximity Radar -->
+      <div class="anger-meter-container">
+        <div class="anger-header">
+          <div class="gf-mini-head">
+            <img src="assets/girl.png" alt="GF" />
+            <span class="chappal-mini">🩴</span>
+          </div>
+          <div class="anger-titles">
+            <span class="anger-title">GF ANGER &amp; PROXIMITY</span>
+            <span id="gf-distance-text" class="gf-dist-badge">18m BEHIND!</span>
+          </div>
+          <div id="shield-indicator" class="shield-badge hidden">🪖 HELMET SHIELD ACTIVE</div>
+        </div>
+        <div class="anger-bar-bg">
+          <div id="anger-bar-fill" class="anger-bar-fill" style="width: 35%;"></div>
+        </div>
+      </div>
+
+      <!-- Top Right Controls -->
+      <div class="hud-top-actions">
+        <button id="btn-mute" class="icon-btn" title="Toggle Sound">🔊</button>
+        <button id="btn-pause" class="icon-btn" title="Pause Game">⏸️</button>
+        <button id="btn-restart-hud" class="icon-btn" title="Restart">🔄</button>
+      </div>
+    </div>
+
+    <!-- Active Power-Up Banner -->
+    <div id="powerup-banner" class="powerup-banner hidden">
+      <span id="powerup-banner-text">🚀 TURBO BOOST!</span>
+    </div>
+
+    <!-- Incoming Chappal Warning Indicator -->
+    <div id="chappal-warning" class="chappal-warning hidden">
+      ⚠️ INCOMING FLYING CHAPPAL! SWITCH LANES! 🩴
+    </div>
+
+    <!-- Bottom Bar: 5 Funny Power-Up Buttons & Mobile Touch Controls -->
+    <div class="hud-bottom">
+      <!-- Mobile Left/Right/Jump Touch Pad -->
+      <div class="mobile-controls-left">
+        <button id="btn-left" class="touch-steer-btn">⬅️</button>
+        <button id="btn-right" class="touch-steer-btn">➡️</button>
+      </div>
+
+      <!-- 5 Funny Power-ups Deck -->
+      <div class="powerups-deck">
+        <button class="powerup-btn" id="pu-turbo" data-power="turbo" title="Key: 1 | Cost: 5 Coins or Collect on Road">
+          <span class="pu-key">1</span>
+          <span class="pu-icon">🚀</span>
+          <span class="pu-name">TURBO</span>
+          <span class="pu-count" id="count-turbo">1</span>
+        </button>
+
+        <button class="powerup-btn" id="pu-oil" data-power="oil" title="Key: 2 | Make GF Slip!">
+          <span class="pu-key">2</span>
+          <span class="pu-icon">🛢️</span>
+          <span class="pu-name">OIL SLICK</span>
+          <span class="pu-count" id="count-oil">1</span>
+        </button>
+
+        <button class="powerup-btn" id="pu-apology" data-power="apology" title="Key: 3 | Fake Apology Slows Her">
+          <span class="pu-key">3</span>
+          <span class="pu-icon">💐</span>
+          <span class="pu-name">FAKE SORRY</span>
+          <span class="pu-count" id="count-apology">1</span>
+        </button>
+
+        <button class="powerup-btn" id="pu-shield" data-power="shield" title="Key: 4 | Blocks Flying Chappals">
+          <span class="pu-key">4</span>
+          <span class="pu-icon">🪖</span>
+          <span class="pu-name">HELMET</span>
+          <span class="pu-count" id="count-shield">1</span>
+        </button>
+
+        <button class="powerup-btn" id="pu-chaos" data-power="chaos" title="Key: 5 | Summon Auto Traffic Blockade">
+          <span class="pu-key">5</span>
+          <span class="pu-icon">🛺</span>
+          <span class="pu-name">CHAOS</span>
+          <span class="pu-count" id="count-chaos">1</span>
+        </button>
+      </div>
+
+      <!-- Mobile Jump/Wheelie Touch Button -->
+      <div class="mobile-controls-right">
+        <button id="btn-jump" class="touch-steer-btn jump-btn">🛞<br/><small>JUMP</small></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= PAUSE OVERLAY ================= -->
+  <div id="pause-menu" class="overlay-screen hidden">
+    <div class="modal-card">
+      <h2>⏸️ TIME FREEZE (PAUSE)</h2>
+      <p>Your girlfriend is still holding that chappal in mid-air...</p>
+      <div class="menu-buttons">
+        <button id="btn-resume" class="btn-primary">▶️ RESUME ESCAPE</button>
+        <button id="btn-pause-restart" class="btn-secondary">🔄 RESTART</button>
+        <button id="btn-pause-home" class="btn-secondary">🏠 MAIN MENU</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= GAME OVER OVERLAY ================= -->
+  <div id="gameover-menu" class="overlay-screen hidden">
+    <div class="modal-card gameover-card">
+      <div class="slap-visual-stage">
+        <div class="go-avatar gf-rage">
+          <img src="assets/girl.png" alt="Angry GF" />
+          <div class="chappal-whack-anim">🩴💥</div>
+        </div>
+        <div class="pow-burst">PATAAAK!! 👋💥</div>
+        <div class="go-avatar boy-ko">
+          <img src="assets/boy.png" alt="Caught Boy" />
+          <div class="dizzy-stars">💫🤕💫</div>
+        </div>
+      </div>
+
+      <h1 class="gameover-title">RELATIONSHIP STATUS:<br/><span>DELETED 💀</span></h1>
+      <p id="gameover-reason" class="gameover-subtitle">She caught up and delivered a 360-degree supersonic flying chappal combo!</p>
+
+      <div class="gameover-stats">
+        <div class="go-stat">
+          <span>DISTANCE ESCAPED</span>
+          <strong id="go-distance">0 m</strong>
+        </div>
+        <div class="go-stat">
+          <span>FINAL SCORE</span>
+          <strong id="go-score">0</strong>
+        </div>
+        <div class="go-stat">
+          <span>COINS LOOTED</span>
+          <strong id="go-coins">0</strong>
+        </div>
+        <div class="go-stat">
+          <span>CHAPPALS DODGED</span>
+          <strong id="go-chappals">0</strong>
+        </div>
+      </div>
+
+      <div class="menu-buttons">
+        <button id="btn-try-again" class="btn-primary pulse-btn">🛵 TRY AGAIN</button>
+        <button id="btn-go-menu" class="btn-secondary">🏠 MAIN MENU</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
