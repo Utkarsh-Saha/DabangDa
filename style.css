@@ -864,31 +864,417 @@ html, body {
   color: var(--secondary);
 }
 
-/* Responsive tweaks for smaller mobile screens */
-@media (max-width: 720px) {
-  .cast-showcase {
-    gap: 8px;
+/* ================= PHONE LANDSCAPE & COMPACT UI OPTIMIZATION ================= */
+#rotate-device-banner {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 99;
+  background: rgba(16, 4, 30, 0.96);
+  backdrop-filter: blur(8px);
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  text-align: center;
+}
+
+.rotate-card {
+  background: linear-gradient(145deg, #270c47 0%, #140529 100%);
+  border: 3px solid var(--secondary);
+  border-radius: 22px;
+  padding: 20px;
+  max-width: 340px;
+}
+
+.rotate-icon {
+  font-size: 3rem;
+  margin-bottom: 8px;
+  animation: shakeFury 0.8s infinite alternate;
+}
+
+.rotate-card h2 {
+  font-family: var(--font-title);
+  font-size: 1.6rem;
+  color: var(--secondary);
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+
+.rotate-card p {
+  font-size: 0.85rem;
+  color: #e2d4f0;
+  margin-bottom: 14px;
+}
+
+/* Show "Rotate to Landscape" prompt on narrow portrait phones unless dismissed */
+@media (max-width: 650px) and (orientation: portrait) {
+  #rotate-device-banner:not(.dismissed) {
+    display: flex;
   }
-  .cast-card {
-    width: 145px;
-    padding: 8px;
+}
+
+/* Compact HUD & Modals for Mobile Landscape & Small Screens */
+@media (max-height: 540px), (max-width: 940px) {
+  #hud {
+    padding: 6px 10px;
   }
-  .avatar-ring {
-    width: 68px;
-    height: 68px;
+
+  .hud-top {
+    gap: 6px;
+    align-items: center;
+    flex-wrap: nowrap;
   }
+
+  .stats-cluster {
+    gap: 4px;
+    flex-wrap: nowrap;
+  }
+
+  .stat-pill {
+    padding: 3px 7px;
+    border-radius: 9px;
+    gap: 4px;
+    border-width: 1.5px;
+  }
+
+  .stat-icon {
+    font-size: 0.9rem;
+  }
+
+  .stat-label {
+    font-size: 0.48rem;
+    line-height: 1;
+  }
+
+  .stat-value {
+    font-size: 0.85rem;
+    line-height: 1.05;
+  }
+
+  .anger-meter-container {
+    min-width: 155px;
+    max-width: 245px;
+    padding: 4px 8px;
+    border-radius: 11px;
+    border-width: 2px;
+  }
+
+  .anger-header {
+    gap: 6px;
+    margin-bottom: 3px;
+  }
+
+  .gf-mini-head {
+    width: 24px;
+    height: 24px;
+  }
+
+  .chappal-mini {
+    font-size: 0.72rem;
+    bottom: -2px;
+    right: -4px;
+  }
+
+  .anger-title {
+    font-size: 0.65rem;
+    line-height: 1;
+  }
+
+  .gf-dist-badge {
+    font-size: 0.62rem;
+    line-height: 1.1;
+  }
+
+  .shield-badge {
+    font-size: 0.52rem;
+    padding: 2px 5px;
+  }
+
+  .anger-bar-bg {
+    height: 7px;
+  }
+
+  .hud-top-actions {
+    gap: 4px;
+  }
+
+  .icon-btn {
+    width: 30px;
+    height: 30px;
+    font-size: 0.88rem;
+    border-radius: 8px;
+    border-width: 1.5px;
+  }
+
+  /* Compact Live Comic Speech Bubbles */
+  #live-barks-container {
+    top: 46px;
+    max-width: 390px;
+  }
+
+  .comic-bark {
+    padding: 4px 10px;
+    font-size: 0.72rem;
+    border-width: 2px;
+    border-radius: 11px;
+    gap: 7px;
+    box-shadow: 3px 3px 0px #ff2a5f;
+  }
+
+  .comic-bark img {
+    width: 26px;
+    height: 26px;
+  }
+
+  .comic-bark .bark-speaker {
+    font-size: 0.65rem;
+  }
+
+  /* Compact Banners */
+  .powerup-banner {
+    font-size: 0.92rem;
+    padding: 3px 12px;
+    border-width: 2px;
+  }
+
+  .chappal-warning {
+    font-size: 0.82rem;
+    padding: 3px 10px;
+    border-width: 2px;
+  }
+
+  /* Compact Bottom Deck & Touch Controls */
+  .hud-bottom {
+    gap: 6px;
+  }
+
+  .powerups-deck {
+    gap: 5px;
+    flex-wrap: nowrap;
+  }
+
   .powerup-btn {
-    min-width: 60px;
-    padding: 6px 8px;
+    min-width: 46px;
+    padding: 3px 5px;
+    border-radius: 10px;
+    border-width: 1.5px;
+    box-shadow: 0 3px 0 #0d031c;
   }
+
+  .pu-key {
+    display: none;
+  }
+
   .pu-icon {
-    font-size: 1.2rem;
+    font-size: 0.95rem;
   }
+
   .pu-name {
-    font-size: 0.7rem;
+    font-size: 0.54rem;
+    letter-spacing: 0.3px;
   }
+
+  .pu-count {
+    min-width: 16px;
+    height: 16px;
+    font-size: 0.58rem;
+    top: -5px;
+    right: -4px;
+    border-width: 1.5px;
+  }
+
+  .mobile-controls-left, .mobile-controls-right {
+    gap: 5px;
+  }
+
+  .touch-steer-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+    border-radius: 10px;
+    border-width: 1.5px;
+  }
+
+  .jump-btn {
+    width: 44px;
+    height: 44px;
+    font-size: 0.9rem;
+  }
+
+  .jump-btn small {
+    font-size: 0.48rem;
+  }
+
+  /* Compact Overlay Cards (Main Menu, Cutscene, Game Over) so they fit phone landscape without scrolling */
+  .overlay-screen {
+    padding: 6px 10px;
+  }
+
+  .bollywood-poster, .modal-card, .cutscene-box {
+    padding: 10px 16px;
+    max-width: 530px;
+    border-radius: 16px;
+    border-width: 2.5px;
+  }
+
+  .poster-badge {
+    font-size: 0.72rem;
+    padding: 2px 10px;
+    margin-bottom: 3px;
+  }
+
+  .game-title {
+    font-size: 1.45rem;
+    margin-bottom: 6px;
+    text-shadow: 2px 2px 0px #ff2a5f, 4px 4px 0px #000;
+  }
+
+  .cast-showcase {
+    gap: 10px;
+    margin: 4px 0 8px;
+  }
+
+  .cast-card {
+    width: 130px;
+    padding: 5px 8px;
+    border-radius: 11px;
+  }
+
+  .avatar-ring {
+    width: 46px;
+    height: 46px;
+    margin-bottom: 3px;
+    border-width: 2.5px;
+  }
+
+  .chappal-floating {
+    font-size: 1rem;
+  }
+
+  .cast-name {
+    font-size: 0.85rem;
+  }
+
+  .cast-quote {
+    font-size: 0.65rem;
+  }
+
+  .vs-badge {
+    width: 36px;
+    height: 36px;
+    font-size: 1.1rem;
+    border-width: 2px;
+  }
+
+  .story-blurb {
+    font-size: 0.72rem;
+    line-height: 1.25;
+    margin-bottom: 8px;
+  }
+
+  .menu-buttons {
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+
+  .btn-primary, .btn-secondary {
+    font-size: 0.92rem;
+    padding: 6px 14px;
+    border-radius: 10px;
+    border-width: 2px;
+    box-shadow: 0 3px 0 #6b001b;
+  }
+
+  .controls-guide {
+    font-size: 0.62rem;
+    padding: 4px 8px;
+    gap: 2px;
+  }
+
+  /* Compact Cutscene Stage */
+  .cutscene-header {
+    font-size: 0.95rem;
+    margin-bottom: 6px;
+  }
+
   #cutscene-stage {
-    flex-direction: column;
-    text-align: center;
+    padding: 8px 12px;
+    gap: 10px;
+    margin-bottom: 8px;
+    flex-direction: row;
+    text-align: left;
+  }
+
+  .cutscene-avatar {
+    width: 58px;
+    height: 58px;
+    border-width: 2.5px;
+  }
+
+  .speaker-tag {
+    font-size: 0.75rem;
+    padding: 2px 8px;
+    margin-bottom: 4px;
+  }
+
+  .dialogue-text {
+    font-size: 0.85rem;
+  }
+
+  /* Compact Game Over Stage */
+  .slap-visual-stage {
+    gap: 10px;
+    margin-bottom: 6px;
+  }
+
+  .go-avatar {
+    width: 56px;
+    height: 56px;
+    border-width: 2.5px;
+  }
+
+  .chappal-whack-anim {
+    font-size: 1.3rem;
+    right: -10px;
+    top: -6px;
+  }
+
+  .dizzy-stars {
+    font-size: 0.88rem;
+    top: -12px;
+  }
+
+  .pow-burst {
+    font-size: 1.05rem;
+    padding: 3px 8px;
+  }
+
+  .gameover-title {
+    font-size: 1.35rem;
+    margin-bottom: 2px;
+  }
+
+  .gameover-subtitle {
+    font-size: 0.72rem;
+    margin-bottom: 8px;
+  }
+
+  .gameover-stats {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+    margin-bottom: 8px;
+  }
+
+  .go-stat {
+    padding: 5px;
+    border-radius: 9px;
+  }
+
+  .go-stat span {
+    font-size: 0.52rem;
+  }
+
+  .go-stat strong {
+    font-size: 1rem;
   }
 }

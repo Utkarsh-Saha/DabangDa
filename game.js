@@ -1328,7 +1328,32 @@
     updatePowerupHUD();
   }
 
+  // Try locking mobile screen to Landscape + fullscreen on game start
+  function tryLockLandscape() {
+    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || window.innerWidth < 900;
+    if (!isMobile) return;
+    const docEl = document.documentElement;
+    if (docEl.requestFullscreen && !document.fullscreenElement) {
+      docEl.requestFullscreen().then(() => {
+        if (screen.orientation && screen.orientation.lock) {
+          screen.orientation.lock('landscape').catch(() => {});
+        }
+      }).catch(() => {});
+    } else if (screen.orientation && screen.orientation.lock) {
+      screen.orientation.lock('landscape').catch(() => {});
+    }
+  }
+
+  const dismissRotateBtn = document.getElementById('btn-dismiss-rotate');
+  if (dismissRotateBtn) {
+    dismissRotateBtn.addEventListener('click', () => {
+      document.getElementById('rotate-device-banner').classList.add('dismissed');
+      tryLockLandscape();
+    });
+  }
+
   function startCutscene() {
+    tryLockLandscape();
     audio.init();
     mainMenuEl.classList.add('hidden');
     gameoverEl.classList.add('hidden');
@@ -1360,6 +1385,7 @@
   }
 
   function startGameplay() {
+    tryLockLandscape();
     audio.init();
     mainMenuEl.classList.add('hidden');
     cutsceneEl.classList.add('hidden');
